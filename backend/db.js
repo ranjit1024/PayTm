@@ -9,7 +9,7 @@ const userSchema = new mongoose.Schema({
         trim:true,
         lowercase:true,
         minLength:3,
-        maxLength:30
+        maxLength:30   
     },
     password:{
         type:String,
@@ -17,7 +17,13 @@ const userSchema = new mongoose.Schema({
         minLength:5,
         maxLength:50,
     },
-    firstName:{
+    firstname:{
+        type:String,
+        require:true,
+        minLength:5,
+        maxLength:50
+    },
+    lastname:{
         type:String,
         require:true,
         minLength:5,
@@ -25,5 +31,7 @@ const userSchema = new mongoose.Schema({
     }
     
 })
+
 export const users = mongoose.model("user",userSchema);
+
 
