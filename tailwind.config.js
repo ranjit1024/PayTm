@@ -5,7 +5,14 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      backgroundImage:{
+        'hero-pattern':"url('src/topography.svg')"
+      },
+      fontFamily:{
+        "poppins":['Poppins','sans-serif']
+      }
+    },
   },
   plugins: [],
 }
