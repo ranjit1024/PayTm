@@ -2,8 +2,8 @@ import express from "express";
 import zod from "zod";
 import jwt from "jsonwebtoken"
 import { JWT_SECRET } from "../config.js";
-import { users } from "../db.js";
-
+import { users, users, users } from "../db.js";
+import { authMiddleware } from "../middleware/middleware.js";
 
 export const userRouter = express.Router();
 
@@ -91,4 +91,40 @@ userRouter.post('/signin',async (req,res)=>{
         "msg":"Error while logging in"
     })
 
+})
+
+const updateBody = zod.object({
+    password:zod.string().optional(),
+    firstname:zod.string().optional(),
+    lastname:zod.string.optional(),
+})
+userRouter.put("/", authMiddleware, async(req,res)=>{
+    const {success} = updateBody.safeParse(req.body);
+
+    if(!success){
+        return res.status(411).json({
+            msg:'Error while updating information'
+        })
+    }
+
+    await users.updateOne({id:req.userId},req.body);
+
+    res.json({
+        msg:'Updated Successfully'
+    })
+})
+
+userRouter.get("/bulk", async (req, res)=>{
+    const filter = req.query.filter || "";
+
+    const findUser = await users.find({
+        $or:[{
+            firstname:{
+                "$regex":filter
+            },
+            lastname:{
+                "$regex":filter
+            }
+        },]
+    })
 })
